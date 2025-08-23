@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>あなたのサービス名 | シンプル1ページサイト</title>
+  <meta name="description" content="IT初心者でもすぐ公開できる、サービス紹介用の1ページWebサイト。GitHub Pages対応テンプレート。" />
+  <meta name="robots" content="index,follow" />
+  <meta name="theme-color" content="#0ea5e9" />
+  <meta property="og:title" content="あなたのサービス名" />
+  <meta property="og:description" content="サービスの魅力を1ページでわかりやすく。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://example.github.io/your-site" />
+  <meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='630'%3E%3Crect width='100%25' height='100%25' fill='%230ea5e9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='64' fill='white'%3ESite%20Preview%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%230ea5e9'/%3E%3Ctext x='50' y='62' font-size='64' text-anchor='middle' fill='white' font-family='Arial'%3E★%3C/text%3E%3C/svg%3E" />
+
+  <!--
+  =============================================
+  GitHub Pages用 1ファイル・テンプレート
+  ---------------------------------------------
+  使い方（超簡単）
+  1) このファイルを index.html として保存
+  2) GitHub で新しいリポジトリを作成 → index.html をアップ
+  3) GitHub: Settings → Pages → Deploy from a branch
+     Branch: main（またはmaster） / Folder: /(root) → Save
+  4) 数十秒でURLが発行されます（例: https://あなたのID.github.io/リポジトリ名）
+
+  お問い合わせフォーム（Formspree 推奨）
+  - 無料でメール受信できます: https://formspree.io
+  - フォームを作成して、発行されたエンドポイントURLを
+    <form action="https://formspree.io/f/YOUR_FORMSPREE_ID"> の YOUR_FORMSPREE_ID に置き換えてください。
+  - GitHub Pages はサーバーがないため、メール送信はこのような外部サービスを使うのが簡単です。
+
+  Googleフォームを使いたい場合（代替）
+  - Googleフォーム → 送信 → 「</>」埋め込み をコピー
+  - 下の <section id="contact"> 内の <form> を削除し、<iframe ...></iframe> を貼り付け
+
+  カスタマイズのポイント
+  - :root 内の --brand, --brand-2 の色を変更 → サイト全体の色が変わります
+  - <title> や 見出しテキスト をあなたの内容に変更
+  - セクションを増やしたい時は <section> をコピペ
+  =============================================
+  -->
+
+  <style>
+    :root{
+      --brand: #0ea5e9;      /* メインカラー */
+      --brand-2: #22d3ee;    /* アクセント */
+      --ink: #0f172a;        /* テキスト */
+      --muted: #475569;      /* サブテキスト */
+      --bg: #f8fafc;         /* 背景 */
+      --card: #ffffff;       /* カード背景 */
+      --ring: rgba(14,165,233,.35);
+      --radius: 16px;
+      --shadow: 0 10px 30px rgba(2,6,23,.08);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;color:var(--ink);background:var(--bg);scroll-behavior:smooth}
+    a{color:var(--brand);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{max-width:1100px;margin-inline:auto;padding:0 20px}
+    header.site-header{position:sticky;top:0;background:rgba(255,255,255,.8);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid #eef2f7;z-index:50}
+    .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .brand{display:flex;align-items:center;gap:.6rem;font-weight:700}
+    .brand .logo{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand-2));display:grid;place-items:center;color:#fff;font-size:16px;box-shadow:0 6px 16px rgba(14,165,233,.35)}
+    .nav-links{display:flex;gap:1rem}
+    .nav-links a{padding:.4rem .6rem;border-radius:10px}
+    .nav-links a:hover{background:#f1f5f9;text-decoration:none}
+    .menu-btn{display:none}
+
+    .hero{position:relative;isolation:isolate;padding:80px 0;background:radial-gradient(1200px 600px at 10% -10%, rgba(34,211,238,.25), transparent 60%), radial-gradient(1200px 600px at 110% 10%, rgba(14,165,233,.25), transparent 60%)}
+    .hero-inner{display:grid;gap:2rem;align-items:center}
+    .hero h1{font-size:clamp(28px,6vw,48px);line-height:1.1;margin:0 0 .6rem}
+    .hero p{color:var(--muted);font-size:clamp(14px,2.6vw,18px);margin:0 0 1.2rem}
+    .buttons{display:flex;gap:.8rem;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.1rem;border-radius:14px;border:1px solid transparent;box-shadow:var(--shadow);background:var(--brand);color:#fff;font-weight:700}
+    .btn:hover{filter:brightness(.98)}
+    .btn.secondary{background:#fff;color:var(--ink);border-color:#e2e8f0}
+
+    .mock{width:100%;max-width:560px;border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow);border:1px solid #e2e8f0;overflow:hidden}
+    .mock .bar{height:36px;background:linear-gradient(90deg,#e2e8f0,#f1f5f9);display:flex;align-items:center;gap:6px;padding:0 10px}
+    .dot{width:10px;height:10px;border-radius:50%;background:#94a3b8}
+    .mock .screen{padding:20px}
+
+    section{padding:64px 0}
+    .section-title{font-size:28px;margin:0 0 10px}
+    .section-sub{color:var(--muted);margin:0 0 24px}
+
+    .grid{display:grid;gap:18px}
+    @media(min-width:880px){
+      .hero-inner{grid-template-columns:1.1fr .9fr}
+      .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+      .grid.cols-2{grid-template-columns:1fr 1fr}
+    }
+
+    .card{background:var(--card);border:1px solid #e2e8f0;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+    .card h3{margin:0 0 6px;font-size:18px}
+    .card p{margin:0;color:var(--muted)}
+
+    .about{background:#fff}
+
+    form{display:grid;gap:12px}
+    label{font-weight:600}
+    .input, textarea{width:100%;padding:12px 14px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;outline:none}
+    .input:focus, textarea:focus{border-color:var(--brand);box-shadow:0 0 0 4px var(--ring)}
+    textarea{min-height:120px;resize:vertical}
+    .help{color:var(--muted);font-size:13px}
+    .note{font-size:14px;color:var(--muted)}
+
+    footer{padding:30px 0;border-top:1px solid #e2e8f0;color:#64748b;text-align:center;background:#fff}
+    .small{font-size:12px}
+
+    .hidden{display:none}
+    .ok{color:#059669}
+    .ng{color:#b91c1c}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <div class="brand"><span class="logo" aria-hidden>☆</span><span>あなたのサービス名</span></div>
+      <nav class="nav-links" aria-label="主要">
+        <a href="#features">特徴</a>
+        <a href="#about">概要</a>
+        <a href="#contact">お問い合わせ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <div>
+          <h1>シンプルだけど伝わる。<br/>今すぐ公開できる1ページサイト。</h1>
+          <p>スマホでの見やすさを最優先に設計。サービスの魅力を短く・強く・分かりやすく届けます。GitHub Pagesにアップするだけ。</p>
+          <div class="buttons">
+            <a class="btn" href="#contact" role="button" aria-label="お問い合わせへ移動">無料で相談してみる</a>
+            <a class="btn secondary" href="#features" role="button">特徴を見る</a>
+          </div>
+          <p class="note" style="margin-top:8px">※ このテンプレは完全無料・商用利用OK。著作表記不要。</p>
+        </div>
+        <div>
+          <figure class="mock" aria-label="サイトのイメージ">
+            <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+            <div class="screen">
+              <h3 style="margin:0 0 6px">サイト見出し例</h3>
+              <p style="margin:0 0 10px;color:var(--muted)">ここに1〜2行で価値提案。ターゲット・課題・結果が伝わると◎</p>
+              <ul style="margin:0;padding-left:18px;color:var(--muted)">
+                <li>スマホ優先のレイアウト</li>
+                <li>軽量・高速・SEOに配慮</li>
+                <li>問い合わせフォーム付き</li>
+              </ul>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container">
+        <h2 class="section-title">特徴</h2>
+        <p class="section-sub">必要な要素だけ。難しい設定なしで、今日からURLを配れます。</p>
+        <div class="grid cols-3">
+          <div class="card">
+            <h3>スマホ最適</h3>
+            <p>小さな画面で読みやすい文字・余白・ボタンサイズ。PCでも美しく表示。</p>
+          </div>
+          <div class="card">
+            <h3>秒で公開</h3>
+            <p>GitHub Pagesにアップ → すぐURL発行。ドメイン接続も可能。</p>
+          </div>
+          <div class="card">
+            <h3>問い合わせ対応</h3>
+            <p>FormspreeやGoogleフォームに対応。メールで受け取れます。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <div class="container grid cols-2">
+        <div>
+          <h2 class="section-title">このサイトについて</h2>
+          <p class="section-sub">1ページで「誰向け・何ができる・どう良くなる」を伝える構成。余分な装飾は省き、CTA（行動喚起）を明確にしています。</p>
+          <ul>
+            <li>ブランドカラーは <code>:root</code> の変数で一括変更</li>
+            <li>セクションはコピペで増減OK</li>
+            <li>画像なしでも映えるグラデ背景</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0">よくある用途</h3>
+          <ul style="margin:10px 0 0 18px;color:var(--muted)">
+            <li>名刺代わりの紹介サイト</li>
+            <li>お店・サービスの簡易LP</li>
+            <li>イベント告知＆申込み導線</li>
+            <li>簡単なWebツールの説明とリンク</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container grid cols-2">
+        <div>
+          <h2 class="section-title">お問い合わせ</h2>
+          <p class="section-sub">小さな質問でもお気軽にどうぞ。1〜2営業日以内に返信します。</p>
+          <form id="contact-form" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST" novalidate>
+            <div>
+              <label for="name">お名前</label>
+              <input class="input" id="name" name="name" type="text" placeholder="山田 太郎" required />
+            </div>
+            <div>
+              <label for="email">メールアドレス</label>
+              <input class="input" id="email" name="email" type="email" inputmode="email" placeholder="you@example.com" required />
+              <p class="help">返信先に使います。正しくご入力ください。</p>
+            </div>
+            <div>
+              <label for="message">ご用件</label>
+              <textarea id="message" name="message" placeholder="お問い合わせ内容をできるだけ具体的にご記入ください" required></textarea>
+            </div>
+            <input type="hidden" name="_subject" value="サイトからのお問い合わせ" />
+            <button class="btn" type="submit">送信する</button>
+            <p id="form-status" class="help"></p>
+            <p class="note small">※ 送信に失敗する場合、<a id="mailto" href="mailto:someone@example.com?subject=%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B&amp;body=%E3%81%8A%E5%90%8D%E5%89%8D%3A%0D%0A%E3%83%A1%E3%83%BC%E3%83%AB%3A%0D%0A%E5%86%85%E5%AE%B9%3A%0D%0A">メールアプリで送る</a> もご利用ください。</p>
+          </form>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0">アクセス / 営業時間（例）</h3>
+          <p class="small" style="margin:8px 0 0">〒000-0000 東京都〇〇区〇〇 1-2-3 3F</p>
+          <p class="small" style="margin:6px 0 0">平日 10:00-18:00（土日祝休み）</p>
+          <div style="margin-top:10px;border-radius:12px;overflow:hidden;border:1px solid #e2e8f0">
+            <!-- 地図を埋め込む場合は、Googleマップの「地図を埋め込む」iframeを貼り付け -->
+            <div style="padding:16px;text-align:center;color:var(--muted)">地図をここに埋め込めます</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <small class="small">© <span id="year"></span> あなたのサービス名</small>
+    </div>
+  </footer>
+
+  <script>
+    // 年表示
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // フォーム送信
+    const form = document.getElementById('contact-form');
+    const statusEl = document.getElementById('form-status');
+    const mailto = document.getElementById('mailto');
+
+    function setStatus(msg, ok=true){
+      statusEl.textContent = msg;
+      statusEl.classList.remove('ok','ng');
+      statusEl.classList.add(ok ? 'ok' : 'ng');
+    }
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      statusEl.textContent = '';
+
+      // 簡易バリデーション
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const message = form.message.value.trim();
+      if(!name || !email || !message){
+        setStatus('必須項目を入力してください。', false);
+        return;
+      }
+
+      const action = form.getAttribute('action') || '';
+      const isFormspreeReady = !action.includes('YOUR_FORMSPREE_ID');
+
+      // mailto の本文を更新（フォールバック用）
+      const mail = `mailto:someone@example.com?subject=${encodeURIComponent('サイトからのお問い合わせ')}&body=${encodeURIComponent(`お名前: ${name}\nメール: ${email}\n内容: ${message}`)}`;
+      mailto.setAttribute('href', mail);
+
+      if(!isFormspreeReady){
+        setStatus('メールアプリが開かない場合は、上の「メールアプリで送る」をご利用ください。', false);
+        window.location.href = mail; // そのまま mailto を起動
+        return;
+      }
+
+      try{
+        const res = await fetch(action, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(form)
+        });
+        if(res.ok){
+          setStatus('送信しました。ご連絡ありがとうございます！');
+          form.reset();
+        }else{
+          const data = await res.json().catch(() => ({}));
+          const msg = data?.errors?.[0]?.message || '送信に失敗しました。時間をおいて再度お試しください。';
+          setStatus(msg, false);
+        }
+      }catch(err){
+        setStatus('ネットワークエラーが発生しました。メールアプリ送信をご利用ください。', false);
+      }
+    });
+  </script>
+</body>
+</html>
