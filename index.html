@@ -232,28 +232,59 @@
     document.getElementById('year').textContent = new Date().getFullYear();
 
     // ニュース取得
-    async function loadNews() {
-      const url = "https://api.rss2json.com/v1/api.json?rss_url=https://news.yahoo.co.jp/rss/topics/top-picks.xml";
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-        const list = document.getElementById("news-list");
-        if (!data.items) {
-          list.innerHTML = '<li>ニュースを取得できませんでした。</li>';
-          return;
-        }
-        data.items.slice(0, 5).forEach(item => {
+<script>
+// ニュース取得（rss2json → 失敗時はAllOriginsに自動フォールバック）
+async function loadNews() {
+  const rssUrl = "https://news.yahoo.co.jp/rss/topics/top-picks.xml";
+  const list = document.getElementById("news-list");
+  list.innerHTML = "<li>読み込み中…</li>";
+
+  // ❶ まず rss2json を試す
+  try {
+    const r1 = await fetch("https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(rssUrl));
+    if (r1.ok) {
+      const d1 = await r1.json();
+      if (d1.items && d1.items.length) {
+        list.innerHTML = "";
+        d1.items.slice(0, 5).forEach(item => {
           const li = document.createElement("li");
           li.innerHTML = `<a href="${item.link}" target="_blank" rel="noopener">${item.title}</a>`;
           list.appendChild(li);
         });
-      } catch (e) {
-        document.getElementById("news-list").innerHTML = "<li>ニュースを取得できませんでした。</li>";
+        return; // 成功したので終了
       }
     }
-    loadNews();
+  } catch (_) { /* 失敗時は次へ */ }
 
-    // フォーム送信
+  // ❷ フォールバック：AllOrigins経由でRSS(XML)を取得→自前でパース
+  try {
+    const proxy = "https://api.allorigins.win/raw?url=" + encodeURIComponent(rssUrl);
+    const r2 = await fetch(proxy);
+    if (!r2.ok) throw new Error("fetch fail");
+    const xmlText = await r2.text();
+
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(xmlText, "application/xml");
+    const items = Array.from(xml.querySelectorAll("item")).slice(0, 5);
+
+    list.innerHTML = "";
+    items.forEach(item => {
+      const title = item.querySelector("title")?.textContent || "(no title)";
+      const link  = item.querySelector("link")?.textContent || "#";
+      const li = document.createElement("li");
+      li.innerHTML = `<a href="${link}" target="_blank" rel="noopener">${title}</a>`;
+      list.appendChild(li);
+    });
+
+    if (!items.length) throw new Error("no items");
+  } catch (e) {
+    list.innerHTML = "<li>ニュースを取得できませんでした。（通信混雑またはRSS側の制限）</li>";
+  }
+}
+loadNews();
+</script>
+
+  // フォーム送信
     const form = document.getElementById('contact-form');
     const statusEl = document.getElementById('form-status');
     const mailto = document.getElementById('mailto');
