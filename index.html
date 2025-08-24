@@ -233,7 +233,7 @@
 
     // ニュース取得
 <script>
-// ニュース取得（rss2json → 失敗時はAllOriginsに自動フォールバック）
+// ニュース取得（Yahoo!トピックスRSS）。失敗時に自動フォールバックします。
 async function loadNews() {
   const rssUrl = "https://news.yahoo.co.jp/rss/topics/top-picks.xml";
   const list = document.getElementById("news-list");
@@ -256,7 +256,7 @@ async function loadNews() {
     }
   } catch (_) { /* 失敗時は次へ */ }
 
-  // ❷ フォールバック：AllOrigins経由でRSS(XML)を取得→自前でパース
+  // ❷ フォールバック：AllOrigins 経由でRSS(XML)を取得 → 自前でパース
   try {
     const proxy = "https://api.allorigins.win/raw?url=" + encodeURIComponent(rssUrl);
     const r2 = await fetch(proxy);
@@ -279,6 +279,7 @@ async function loadNews() {
     if (!items.length) throw new Error("no items");
   } catch (e) {
     list.innerHTML = "<li>ニュースを取得できませんでした。（通信混雑またはRSS側の制限）</li>";
+    console.warn("NEWS LOAD ERROR:", e);
   }
 }
 loadNews();
